@@ -1,9 +1,9 @@
-import { Box, Container, Flex, Heading, Link, Text, VStack, HStack, Divider, Stack, Button } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Link, Text, VStack, HStack, Divider, Stack, Button, Switch } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { FaTwitter, FaFacebook, FaInstagram } from "react-icons/fa";
 
-const Index = () => {
+const Index = ({ colorMode, toggleColorMode }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -11,14 +11,15 @@ const Index = () => {
     setPosts(storedPosts);
   }, []);
   return (
-    <Container maxW="container.xl" p={0}>
-      <Flex as="nav" bg="gray.800" color="white" p={4} justify="space-between" align="center">
+    <Container maxW="container.xl" p={0} bg={colorMode === "dark" ? "gray.800" : "white"} color={colorMode === "dark" ? "white" : "black"}>
+      <Flex as="nav" bg={colorMode === "dark" ? "gray.900" : "gray.800"} color="white" p={4} justify="space-between" align="center">
         <Heading as="h1" size="lg">My Blog</Heading>
         <HStack spacing={4}>
           <Link as={RouterLink} to="/" color="white">Home</Link>
           <Link as={RouterLink} to="/about" color="white">About</Link>
           <Link as={RouterLink} to="/blog" color="white">Blog</Link>
           <Link as={RouterLink} to="/contact" color="white">Contact</Link>
+        <Switch color="white" isChecked={colorMode === "dark"} onChange={toggleColorMode} />
         </HStack>
       </Flex>
 
@@ -32,7 +33,7 @@ const Index = () => {
           <Divider mb={4} />
           <VStack spacing={4} align="stretch">
             {posts.map((post, index) => (
-              <Box key={index} p={4} shadow="md" borderWidth="1px">
+              <Box key={index} p={4} shadow="md" borderWidth="1px" bg={colorMode === "dark" ? "gray.700" : "white"}>
                 <Heading as="h3" size="md">{post.title}</Heading>
                 <Text mt={2}>{post.content}</Text>
                 <Text mt={2} fontSize="sm" color="gray.500">Tags: {post.tags.join(", ")}</Text>
@@ -41,7 +42,7 @@ const Index = () => {
           </VStack>
         </Box>
 
-        <Box flex="1" p={4} bg="gray.50">
+        <Box flex="1" p={4} bg={colorMode === "dark" ? "gray.700" : "gray.50"}>
           <Heading as="h3" size="lg" mb={4}>Recent Posts</Heading>
           <VStack spacing={4} align="stretch">
             {posts.slice(0, 3).map((post, index) => (
@@ -58,7 +59,7 @@ const Index = () => {
         </Box>
       </Flex>
 
-      <Box as="footer" bg="gray.800" color="white" p={4} mt={8}>
+      <Box as="footer" bg={colorMode === "dark" ? "gray.900" : "gray.800"} color="white" p={4} mt={8}>
         <Flex justify="space-between" align="center">
           <Text>&copy; 2023 My Blog. All rights reserved.</Text>
           <HStack spacing={4}>
